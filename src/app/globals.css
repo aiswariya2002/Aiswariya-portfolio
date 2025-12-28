@@ -35,3 +35,32 @@ body {
   scrollbar-width: thin;
   scrollbar-color: rgba(214, 51, 132, 0.4) transparent;
 }
+@keyframes slideLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-left {
+  animation: slideLeft 28s linear infinite;
+  display: flex;
+  width: max-content;
+}
+
+.animate-slide-right {
+  animation: slideRight 28s linear infinite;
+  display: flex;
+  width: max-content;
+}

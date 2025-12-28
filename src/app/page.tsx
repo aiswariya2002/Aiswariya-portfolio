@@ -7,6 +7,7 @@ export default function Page() {
   const [dark, setDark] = useState(false);
   const toggle = () => setDark(!dark);
 const [activeProject, setActiveProject] = useState<any>(null);
+const [menuOpen, setMenuOpen] = useState(false);
 
   const pink1 = "#FFD1DC";
   const pink2 = "#FFB6C1";
@@ -153,16 +154,30 @@ const projects = [
 <header
   className="fixed top-0 left-0 right-0 z-50 border-b border-pink-200/60 backdrop-blur-lg bg-white/30"
 >
-  <nav className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
-    {/* Logo / Name */}
-    <span
-      className="font-extrabold text-xl tracking-wide bg-gradient-to-r from-[#ff99c8] via-[#ff66a3] to-[#ff3385] bg-clip-text text-transparent drop-shadow-[0_0_10px_#ff8fab]"
-    >
+<nav
+  className={`
+    fixed top-0 left-0 right-0 z-50
+    transition-colors duration-300
+    ${dark
+      ? "bg-[#1a1a1a]/80 text-white"
+      : "bg-white/40 text-[#402B2B]"}
+    backdrop-blur-lg border-b border-pink-200/40
+  `}
+>
+  <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    
+    {/* LOGO */}
+    <span className="
+      font-extrabold text-xl tracking-wide
+      bg-gradient-to-r from-[#ff99c8] via-[#ff66a3] to-[#ff3385]
+      bg-clip-text text-transparent
+      drop-shadow-[0_0_10px_#ff8fab]
+    ">
       Aiswariya V
     </span>
 
-    {/* Nav Links */}
-    <div className="flex items-center gap-8 text-sm uppercase tracking-widest">
+    {/* DESKTOP LINKS */}
+    <div className="hidden md:flex items-center gap-8 text-sm uppercase tracking-widest">
       {[
         "About",
         "Skills",
@@ -175,103 +190,239 @@ const projects = [
         <a
           key={x}
           href={`#${x.toLowerCase()}`}
-          className="relative group text-[#402B2B]/90 hover:text-[#ff3385] transition"
+          className={`
+            relative group transition
+            ${dark
+              ? "text-white/80 hover:text-[#ff99c8]"
+              : "text-[#402B2B]/90 hover:text-[#ff3385]"}
+          `}
         >
           {x}
-          <span className="absolute left-0 bottom-[-4px] w-0 h-[2px] bg-gradient-to-r from-[#ffb6c1] to-[#ff69b4] transition-all duration-300 group-hover:w-full"></span>
+          <span className="absolute left-0 bottom-[-4px] w-0 h-[2px]
+            bg-gradient-to-r from-[#ffb6c1] to-[#ff69b4]
+            transition-all duration-300 group-hover:w-full" />
         </a>
       ))}
 
-      {/* Theme Toggle */}
+      {/* THEME TOGGLE */}
       <button
         onClick={toggle}
-        className="px-3 py-1 rounded-md border border-pink-300/60 text-xs text-[#402B2B] hover:bg-pink-100/40 hover:shadow-[0_0_8px_#ffb6c1] transition"
+        className={`
+          px-3 py-1 rounded-md border text-xs transition
+          ${dark
+            ? "border-white/30 text-white hover:bg-white/10"
+            : "border-pink-300/60 text-[#402B2B] hover:bg-pink-100/40"}
+        `}
       >
         {dark ? "Light" : "Dark"}
       </button>
     </div>
-  </nav>
+
+    {/* MOBILE HAMBURGER */}
+    <button
+      onClick={() => setMenuOpen(!menuOpen)}
+      className="md:hidden text-2xl"
+    >
+      ☰
+    </button>
+  </div>
+
+  {/* MOBILE MENU */}
+  {menuOpen && (
+    <div
+      className={`
+        md:hidden px-6 pb-6 space-y-4
+        ${dark ? "bg-[#1a1a1a]/95" : "bg-white/95"}
+      `}
+    >
+      {[
+        "About",
+        "Skills",
+        "Projects",
+        "Internships",
+        "Certifications",
+        "Tools",
+        "Contact",
+      ].map((x) => (
+        <a
+          key={x}
+          href={`#${x.toLowerCase()}`}
+          onClick={() => setMenuOpen(false)}
+          className={`
+            block text-sm uppercase tracking-widest
+            ${dark
+              ? "text-white/80 hover:text-[#ff99c8]"
+              : "text-[#402B2B]/90 hover:text-[#ff3385]"}
+          `}
+        >
+          {x}
+        </a>
+      ))}
+
+      {/* MOBILE THEME TOGGLE */}
+      <button
+        onClick={() => {
+          toggle();
+          setMenuOpen(false);
+        }}
+        className={`
+          mt-4 px-4 py-2 rounded-md text-xs border w-full
+          ${dark
+            ? "border-white/30 text-white"
+            : "border-pink-300/60 text-[#402B2B]"}
+        `}
+      >
+        Switch to {dark ? "Light" : "Dark"} Mode
+      </button>
+    </div>
+  )}
+</nav>
+
 
   {/* Subtle glowing line under navbar */}
   <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#ffb6c1]/70 to-transparent animate-shine" />
 </header>
+{/* ===== HERO (Light + Dark Mode) ===== */}
+<section
+  className={`
+    relative min-h-[100vh] flex items-center justify-center overflow-hidden
+    transition-colors duration-500
+    ${
+      dark
+        ? "bg-gradient-to-br from-[#0f0f0f] via-[#1a1a1a] to-[#111]"
+        : "bg-[linear-gradient(120deg,#fff0f6_65%,#ffd0dc_35%)]"
+    }
+  `}
+>
+  {/* ===== BACKGROUND ORBS ===== */}
+  {!dark && (
+    <>
+      <div
+        className="absolute w-[28rem] h-[28rem] rounded-full blur-3xl top-10 left-10 opacity-25"
+        style={{
+          background: "radial-gradient(circle,#fff,#ffd6e8,transparent)",
+        }}
+      />
+      <div
+        className="absolute w-[26rem] h-[26rem] rounded-full blur-3xl bottom-10 right-10 opacity-25"
+        style={{
+          background: "radial-gradient(circle,#fff,#ffbfd2,transparent)",
+        }}
+      />
+    </>
+  )}
 
-{/* ===== HERO (Unified Soft Pastel Version) ===== */}
-<section className="relative min-h-[100vh] flex items-center justify-center overflow-hidden bg-[linear-gradient(120deg,#fff0f6_65%,#ffd0dc_35%)]">
-  {/* Soft blur light orbs for depth */}
-  <div
-    className="absolute w-[28rem] h-[28rem] rounded-full blur-3xl top-10 left-10 opacity-25"
-    style={{ background: "radial-gradient(circle,#fff,#ffd6e8,transparent)" }}
-  />
-  <div
-    className="absolute w-[26rem] h-[26rem] rounded-full blur-3xl bottom-10 right-10 opacity-25"
-    style={{ background: "radial-gradient(circle,#fff,#ffbfd2,transparent)" }}
-  />
+  {dark && (
+    <>
+      <div className="absolute w-[30rem] h-[30rem] rounded-full blur-3xl top-10 left-10 bg-white/5" />
+      <div className="absolute w-[26rem] h-[26rem] rounded-full blur-3xl bottom-10 right-10 bg-white/5" />
+    </>
+  )}
 
-  {/* Center content */}
+  {/* ===== CONTENT ===== */}
   <div className="relative z-10 text-center px-6">
-<h1
-  className="font-black uppercase leading-[0.9] tracking-tight text-[#ec9ab5] select-none"
-  style={{
-    fontSize: "clamp(70px, 16vw, 230px)",
-    textShadow: `
-      0 0 20px rgba(255, 182, 193, 0.4),
-      0 0 40px rgba(255, 192, 203, 0.25)
-    `,
-  }}
->
-  DEVELOPER
-</h1>
 
-<p className="mt-6 text-lg sm:text-xl font-medium tracking-wide text-[#b23a6f] opacity-95">
-  Full Stack Developer focused on building reliable, user-friendly web applications
-</p>
+    <h1
+      className={`
+        font-black uppercase leading-[0.9] tracking-tight select-none
+        ${dark ? "text-white/90" : "text-[#ec9ab5]"}
+      `}
+      style={{
+        fontSize: "clamp(70px, 16vw, 230px)",
+        textShadow: dark
+          ? "0 0 40px rgba(255,255,255,0.15)"
+          : `
+              0 0 20px rgba(255, 182, 193, 0.4),
+              0 0 40px rgba(255, 192, 203, 0.25)
+            `,
+      }}
+    >
+      DEVELOPER
+    </h1>
 
+    <p
+      className={`
+        mt-6 text-lg sm:text-xl font-medium tracking-wide
+        ${dark ? "text-gray-300" : "text-[#b23a6f]"}
+      `}
+    >
+      Full Stack Developer focused on building reliable, user-friendly web applications
+    </p>
 
-   {/* Buttons — Soft Pastel Harmony */}  
-<div className="mt-10 flex flex-wrap justify-center gap-5">
-  {/* Projects */}
-  <a
-    href="#projects"
-    className="px-8 py-2.5 rounded-lg font-semibold text-[#fff0f4] bg-[#e46b99] hover:bg-[#d85a8b] shadow-[0_4px_15px_rgba(228,107,153,0.3)] hover:shadow-[0_6px_18px_rgba(228,107,153,0.45)] hover:-translate-y-1 transition-all duration-300"
-  >
-    View Projects
-  </a>
+    {/* ===== BUTTONS ===== */}
+    <div className="mt-10 flex flex-wrap justify-center gap-5">
 
-  {/* About */}
-  <a
-    href="#about"
-    className="px-8 py-2.5 rounded-lg font-semibold text-[#e46b99] bg-white hover:bg-[#fff5f8] border border-[#e46b99]/50 shadow-[0_4px_12px_rgba(228,107,153,0.2)] hover:shadow-[0_6px_16px_rgba(228,107,153,0.3)] hover:-translate-y-1 transition-all duration-300"
-  >
-    About Me
-  </a>
+      <a
+        href="#projects"
+        className={`
+          px-8 py-2.5 rounded-lg font-semibold transition-all duration-300
+          ${
+            dark
+              ? "bg-white text-black hover:bg-gray-200"
+              : "bg-[#e46b99] text-[#fff0f4] hover:bg-[#d85a8b]"
+          }
+        `}
+      >
+        View Projects
+      </a>
 
-  {/* Resume */}
- <a
-  href="/AiswariyaFullstackDeveloper.pdf"
-  download
-  className="px-8 py-2.5 rounded-lg font-semibold text-white bg-[#d85a8b]
-             hover:bg-[#c74d7c] shadow-[0_4px_15px_rgba(216,90,139,0.35)]
-             hover:shadow-[0_6px_18px_rgba(216,90,139,0.45)]
-             hover:-translate-y-1 transition-all duration-300"
->
-   Resume
-</a>
+      <a
+        href="#about"
+        className={`
+          px-8 py-2.5 rounded-lg font-semibold transition-all duration-300
+          ${
+            dark
+              ? "border border-white/40 text-white hover:bg-white/10"
+              : "bg-white text-[#e46b99] border border-[#e46b99]/50 hover:bg-[#fff5f8]"
+          }
+        `}
+      >
+        About Me
+      </a>
 
-</div>
+      <a
+        href="/AiswariyaFullstackDeveloper.pdf"
+        download
+        className={`
+          px-8 py-2.5 rounded-lg font-semibold transition-all duration-300
+          ${
+            dark
+              ? "bg-[#3a3a3a] text-white hover:bg-[#4a4a4a]"
+              : "bg-[#d85a8b] text-white hover:bg-[#c74d7c]"
+          }
+        `}
+      >
+        Resume
+      </a>
 
+    </div>
   </div>
 </section>
 
 {/* ===== ABOUT SECTION ===== */}
 <Section id="about" title="" color={pink2}>
-  <div className="max-w-5xl mx-auto px-6 md:px-12 text-[#4b0e2e] space-y-12 animate-fade-in">
+  <div
+    className={`
+      max-w-5xl mx-auto px-6 md:px-12 space-y-12 animate-fade-in
+      ${dark ? "text-gray-300" : "text-[#4b0e2e]"}
+    `}
+  >
 
     {/* ===== INTRO ===== */}
     <div className="text-center space-y-4">
-      <h3 className="text-3xl font-extrabold bg-gradient-to-r from-[#d63384] via-[#ff7bac] to-[#ffb6d5] bg-clip-text text-transparent">
+      <h3
+        className={`
+          text-3xl font-extrabold bg-clip-text text-transparent
+          ${
+            dark
+              ? "bg-gradient-to-r from-white via-gray-300 to-gray-400"
+              : "bg-gradient-to-r from-[#d63384] via-[#ff7bac] to-[#ffb6d5]"
+          }
+        `}
+      >
         Building with Code, Design & Purpose
       </h3>
+
       <p className="text-base opacity-90 max-w-3xl mx-auto leading-relaxed">
         I’m <strong>Aiswariya</strong>, a Full Stack Developer who enjoys building
         clean, reliable, and user-friendly web applications.
@@ -280,13 +431,22 @@ const projects = [
       </p>
     </div>
 
-    {/* ===== FOUR EQUAL CARDS ===== */}
+    {/* ===== FOUR CARDS ===== */}
     <div className="grid md:grid-cols-2 gap-8">
 
-      {/*  Education */}
-      <div className="p-6 rounded-2xl bg-white/40 backdrop-blur-md border border-white/50 shadow-[0_4px_20px_rgba(255,182,193,0.25)] hover:shadow-[0_0_22px_#ffb6d5aa] transition">
-        <h4 className="text-lg font-semibold text-[#b12b6f] mb-2">
-           Education
+      {/* ===== Education ===== */}
+      <div
+        className={`
+          p-6 rounded-2xl backdrop-blur-md border transition
+          ${
+            dark
+              ? "bg-white/5 border-white/10 hover:shadow-[0_0_22px_rgba(255,255,255,0.08)]"
+              : "bg-white/40 border-white/50 hover:shadow-[0_0_22px_#ffb6d5aa]"
+          }
+        `}
+      >
+        <h4 className="text-lg font-semibold mb-2">
+          Education
         </h4>
         <p className="text-sm opacity-90 leading-relaxed">
           Graduated in <strong>2024</strong> from
@@ -296,10 +456,19 @@ const projects = [
         </p>
       </div>
 
-      {/*  MERN Certification */}
-      <div className="p-6 rounded-2xl bg-white/40 backdrop-blur-md border border-white/50 shadow-[0_4px_20px_rgba(255,182,193,0.25)] hover:shadow-[0_0_22px_#ffb6d5aa] transition">
-        <h4 className="text-lg font-semibold text-[#b12b6f] mb-2">
-           MERN Stack Certification
+      {/* ===== MERN Certification ===== */}
+      <div
+        className={`
+          p-6 rounded-2xl backdrop-blur-md border transition
+          ${
+            dark
+              ? "bg-white/5 border-white/10 hover:shadow-[0_0_22px_rgba(255,255,255,0.08)]"
+              : "bg-white/40 border-white/50 hover:shadow-[0_0_22px_#ffb6d5aa]"
+          }
+        `}
+      >
+        <h4 className="text-lg font-semibold mb-2">
+          MERN Stack Certification
         </h4>
         <p className="text-sm opacity-90 leading-relaxed">
           Completed a <strong>MERN Stack Development program</strong> and earned a
@@ -310,37 +479,56 @@ const projects = [
         </p>
       </div>
 
-      {/*  Kriyatec Internship */}
-      <div className="p-6 rounded-2xl bg-white/40 backdrop-blur-md border border-white/50 shadow-[0_4px_20px_rgba(255,182,193,0.25)] hover:shadow-[0_0_22px_#ffb6d5aa] transition">
-        <h4 className="text-lg font-semibold text-[#b12b6f] mb-2">
-           Internship — Kriyatec IT Systems
+      {/* ===== Kriyatec Internship ===== */}
+      <div
+        className={`
+          p-6 rounded-2xl backdrop-blur-md border transition
+          ${
+            dark
+              ? "bg-white/5 border-white/10 hover:shadow-[0_0_22px_rgba(255,255,255,0.08)]"
+              : "bg-white/40 border-white/50 hover:shadow-[0_0_22px_#ffb6d5aa]"
+          }
+        `}
+      >
+        <h4 className="text-lg font-semibold mb-2">
+          Internship — Kriyatec IT Systems
         </h4>
         <p className="text-sm opacity-90 leading-relaxed">
-          Worked with modern frameworks like <strong>Angular</strong>,
-          <strong> Node.js</strong>, <strong>Fastify</strong>,
-          and <strong>NestJS</strong>.
+          Successfully completed a Full Stack internship working with
+          <strong> Angular</strong>, <strong>Node.js</strong>,
+          <strong> Fastify</strong>, and <strong>NestJS</strong>.
           Focused on API development, modular architecture,
           MongoDB integration, and Swagger documentation.
         </p>
       </div>
 
-      {/* Logic Technologies */}
-      <div className="p-6 rounded-2xl bg-white/40 backdrop-blur-md border border-white/50 shadow-[0_4px_20px_rgba(255,182,193,0.25)] hover:shadow-[0_0_22px_#ffb6d5aa] transition">
-        <h4 className="text-lg font-semibold text-[#b12b6f] mb-2">
-           Logic Technologies Pvt. Ltd.
+      {/* ===== Logic Technologies (UPDATED) ===== */}
+      <div
+        className={`
+          p-6 rounded-2xl backdrop-blur-md border transition
+          ${
+            dark
+              ? "bg-white/5 border-white/10 hover:shadow-[0_0_22px_rgba(255,255,255,0.08)]"
+              : "bg-white/40 border-white/50 hover:shadow-[0_0_22px_#ffb6d5aa]"
+          }
+        `}
+      >
+        <h4 className="text-lg font-semibold mb-2">
+          Logic Technologies Pvt. Ltd.
         </h4>
         <p className="text-sm opacity-90 leading-relaxed">
-          Currently working as a <strong>Full Stack Developer</strong>
-          using <strong>React</strong>, <strong>Node.js</strong>,
+          After successfully completing my internship, I started working on
+          <strong> Full Stack freelance projects</strong> involving
+          <strong> React</strong>, <strong>Node.js</strong>,
           <strong> Express</strong>, and <strong>MySQL</strong>.
-          Involved in dashboard development, backend integration,
-          feature implementation, and performance optimization.
+          Handling real-world dashboards, backend integrations,
+          feature development, and production-ready deployments.
         </p>
       </div>
 
     </div>
 
-    {/* ===== CLOSING LINE ===== */}
+    {/* ===== CLOSING ===== */}
     <div className="text-center pt-6">
       <p className="text-base opacity-90 max-w-3xl mx-auto">
         I’m actively seeking a <strong>full-time development role</strong>
@@ -353,116 +541,92 @@ const projects = [
 </Section>
 
 
+
 {/* ===== SKILLS & TOOLS SECTION ===== */}
-<Section id="skills-tools" title="Skills & Tools" color={pink2}>
-  <div className="max-w-6xl mx-auto px-6 space-y-10">
+<Section id="skills" title="Skills & Tools" color={pink2}>
+  <div className="max-w-6xl mx-auto px-6 space-y-12">
 
     {/* ===== SKILLS SLIDER ===== */}
-    <div>
-      <h3 className="text-lg font-semibold text-[#b12b6f] mb-4 text-center">
-         Development Skills
+    <div className="overflow-hidden">
+      <h3
+        className={`text-lg font-semibold mb-4 text-center ${
+          dark ? "text-gray-200" : "text-[#b12b6f]"
+        }`}
+      >
+        Development Skills
       </h3>
-      <div className="flex gap-6 animate-slide-left overflow-hidden">
-        {[
-          "HTML5",
-          "CSS3",
-          "Bootstrap",
-          "JavaScript",
-          "TypeScript",
-          "React",
-          "Angular",
-          "Next.js",
-          "Node.js",
-          "Express.js",
-          "Nest.js",
-          "Fastify",
-          "MySQL",
-          "Swagger",
-          "Nodemon",
-          "Git",
-        ].map((skill) => (
-          <div
-            key={skill}
-            className="px-6 py-3 border border-white/40 rounded-xl bg-white/30 backdrop-blur-sm text-sm font-medium shadow-[0_0_15px_rgba(255,182,193,0.25)] hover:shadow-[0_0_20px_#ffb6d5] transition"
-          >
-            {skill}
-          </div>
-        ))}
-        {/* duplicate for seamless loop */}
-        {[
-          "HTML5",
-          "CSS3",
-          "Bootstrap",
-          "JavaScript",
-          "TypeScript",
-          "React",
-          "Angular",
-          "Next.js",
-          "Node.js",
-          "Express.js",
-          "Nest.js",
-          "Fastify",
-          "MySQL",
-          "Swagger",
-          "Nodemon",
-          "Git",
-        ].map((skill, i) => (
-          <div
-            key={`${skill}-2-${i}`}
-            className="px-6 py-3 border border-white/40 rounded-xl bg-white/30 backdrop-blur-sm text-sm font-medium shadow-[0_0_15px_rgba(255,182,193,0.25)]"
-          >
-            {skill}
-          </div>
-        ))}
+
+      <div className="relative w-full overflow-hidden">
+        <div className="animate-slide-left gap-6">
+          {[
+            "HTML5","CSS3","Bootstrap","JavaScript","TypeScript","React",
+            "Angular","Next.js","Node.js","Express.js","Nest.js",
+            "Fastify","MySQL","Swagger","Nodemon","Git",
+          ].concat([
+            "HTML5","CSS3","Bootstrap","JavaScript","TypeScript","React",
+            "Angular","Next.js","Node.js","Express.js","Nest.js",
+            "Fastify","MySQL","Swagger","Nodemon","Git",
+          ]).map((skill, i) => (
+            <div
+              key={i}
+              className={`
+                px-6 py-3 rounded-xl text-sm font-medium whitespace-nowrap
+                backdrop-blur-sm transition
+                ${
+                  dark
+                    ? "bg-white/10 text-gray-200 border border-white/10"
+                    : "bg-white/30 text-[#402B2B] border border-white/40"
+                }
+              `}
+            >
+              {skill}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
 
     {/* ===== TOOLS SLIDER ===== */}
-    <div>
-      <h3 className="text-lg font-semibold text-[#b12b6f] mb-4 text-center">
-         Tools & Platforms
+    <div className="overflow-hidden">
+      <h3
+        className={`text-lg font-semibold mb-4 text-center ${
+          dark ? "text-gray-200" : "text-[#b12b6f]"
+        }`}
+      >
+        Tools & Platforms
       </h3>
-      <div className="flex gap-6 animate-slide-right overflow-hidden">
-        {[
-          "VS Code",
-          "Postman",
-          "Figma",
-          "Canva",
-          "Railway",
-          "Render",
-          "Hostinger",
-          "Vercel",
-        ].map((tool) => (
-          <div
-            key={tool}
-            className="px-6 py-3 border border-white/40 rounded-xl bg-white/30 backdrop-blur-sm text-sm font-medium shadow-[0_0_15px_rgba(255,182,193,0.25)] hover:shadow-[0_0_20px_#ffb6d5] transition"
-          >
-            {tool}
-          </div>
-        ))}
-        {[
-          "VS Code",
-          "Postman",
-          "Figma",
-          "Canva",
-          "Railway",
-          "Render",
-          "Hostinger",
-          "Vercel",
-        ].map((tool, i) => (
-          <div
-            key={`${tool}-2-${i}`}
-            className="px-6 py-3 border border-white/40 rounded-xl bg-white/30 backdrop-blur-sm text-sm font-medium shadow-[0_0_15px_rgba(255,182,193,0.25)]"
-          >
-            {tool}
-          </div>
-        ))}
+
+      <div className="relative w-full overflow-hidden">
+        <div className="animate-slide-right gap-6">
+          {[
+            "VS Code","Postman","Figma","Canva",
+            "Railway","Render","Hostinger","Vercel",
+          ].concat([
+            "VS Code","Postman","Figma","Canva",
+            "Railway","Render","Hostinger","Vercel",
+          ]).map((tool, i) => (
+            <div
+              key={i}
+              className={`
+                px-6 py-3 rounded-xl text-sm font-medium whitespace-nowrap
+                backdrop-blur-sm transition
+                ${
+                  dark
+                    ? "bg-white/10 text-gray-200 border border-white/10"
+                    : "bg-white/30 text-[#402B2B] border border-white/40"
+                }
+              `}
+            >
+              {tool}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
-  </div>
 
-  
+  </div>
 </Section>
+
 
 
  <Section id="projects" title="Projects" color={pink2}>
